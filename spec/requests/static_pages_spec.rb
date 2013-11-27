@@ -2,62 +2,59 @@ require 'spec_helper'
 
 describe "Static pages" do
   
-   describe "Home page" do
-     
-    it "should have the h1 'Home'" do
-      
-      visit '/static_pages/home'
-      page.should have_selector('h1', :text => 'Home')
-    end
+  subject { page }
 
-    it "should have the base title" do
-      visit '/static_pages/home'
-       page should have_selector('title',:text => "Chotolok ")
-    end
+  describe "Home page" do
 
-    it "should not have a custom page title"
-       visit '/static_pages/home'
-       page.should_not have_selector('title', :text => '| Home')
-     end
+    before { visit root_path }
+
+    it { should have_selector('h1', text: 'Home')}
+
+     it {should have_selector('title', text: full_title(''))}
+   it { should_not have_selector('title', text: '| Home')}
+
    end
 
   describe "Help page" do
 
-    it "should have the h1 'Help'" do
+  before { visit help_path }
 
-      visit '/static_pages/help'
-      page.should have_selector('h1', :text => 'Help')
-    end
-    it "should have the right title" do
-      visit '/static_pages/help'
-       page should have_selector('title',:text => "Chotolok | Help")
-    end
+    it { should have_selector('h1', text: 'Help')}
+    it  {should have_selector('title', text: full_title('Help'))}
+
    end
 
   describe "About page" do
 
-    it "should have the h1 'About Chotoloks'" do
+  before { visit about_path }
 
-      visit '/static_pages/about'
-      page.should have_selector('h1', :text => 'About Chotoloks')
-    end
-    it "should have the right title" do
-      visit '/static_pages/about'
-       page should have_selector('title',:text => "Chotolok | About Chotoloks")
-    end
+    it { should have_selector('h1', text: 'About Chotoloks')}
+  
+    it { should have_selector('title', text: full_title('About Chotoloks'))}
+  
    end
 
   describe "Contact page" do
 
-    it "should have the h1 'Contact'" do
+  before { visit contact_path }
 
-      visit '/static_pages/contact'
-      page.should have_selector('h1', :text => 'Contact')
-    end
-    it "should have the right title" do
-      visit '/static_pages/contact'
-       page should have_selector('title',:text => "Chotolok | Contact")
-    end
+    it { should have_selector('h1', text: 'Contact')}
+    it { should have_selector('title', text: full_title('Contact'))}
+  
    end
+
+
+  it "should have the right links on the layout" do
+    visit root_path
+    click_link "About"
+    page.should have_selector 'title', text: full_title('About Chotoloks')
+    click_link "Help"
+    page.should have_selector 'title', text: full_title('Help')
+    click_link "Contact"
+    page.should have_selector 'title', text: full_title('Contact')
+    click_link "Home"
+    click_link "Sign up now!"
+    page.should have_selector 'title', text: full_title('Sign up')
+  end
 
 end
