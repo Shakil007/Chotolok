@@ -53,7 +53,7 @@ describe "User pages" do
       end
 
       it "should create a user"do
-        expect { click_button submit }.not_to change(User, :count).by(1)
+        expect { click_button submit }.to change(User, :count).by(1)
         
       end
 
@@ -61,9 +61,10 @@ describe "User pages" do
 
         before { click_button submit }
 
-        let(:user) { User.find_by_email("user@example.com")}
-        it { should have_selector('title', text: user.name)}
+        let(:user) { User.find_by_email("user@example.com") }
+        it { should have_selector('title', text: user.name) }
         it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+        it { should have_link('Sign out') }
       end
     end
   end
